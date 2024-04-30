@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Calculator</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+
+    <body>
+        <h1>Calculator</h1>
+        <input type="number" id="n1" placeholder="Enter first number">
+        <input type="number" id="n2" placeholder="Enter second number">
+        <button onclick="calculate('add')">Add</button>
+        <button onclick="calculate('subtract')">Subtract</button>
+        <button onclick="calculate('multiply')">Multiply</button>
+        <button onclick="calculate('divide')">Divide</button>
+        <button onclick="calculate('exponent')">Exponent</button>
+        <button onclick="calculate('modulo')">Modulo</button>
+        <button onclick="calculate('squareroot')">squareRoot</button>
+        <p id="result"></p>
+        <script>
+            let port = 8081;
+            function calculate(operation) {
+                var n1 = $('#n1').val();
+                var n2 = $('#n2').val();
+                $.get(`http://localhost:${port}/${operation}?n1=${n1}&n2=${n2}`, function (data, status) {
+                    $('#result').html(String(operation)+" Result: " + data.data);
+                    console.log(data.data);
+                });
+            }
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mypod
+  labels:
+    tier: myapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: myapp
+  template:
+    metadata:
+      labels:
+        tier: myapp
+    spec:
+      containers:
+      - name: nodeapp
+        env:
+        - name: port
+          value: "3041"
+        image: s223518483/nodeapp:1.2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3041
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mypod-service
+  labels:
+    tier: myapp
+spec:
+  selector:
+    tier: myapp
+  externalTrafficPolicy: Cluster
+  type: LoadBalancer
+  ports:
+  - name: mypod-loadbalancer
+    protocol: TCP
+    port: 3041
+    targetPort: 3041
+  
